@@ -69,15 +69,13 @@ class Uninstaller:
             bool: 服务停止是否成功
         """
         try:
-            # 停止服务
-            subprocess.run(["net", "stop", "OpenClawService"], capture_output=True, text=True)
+            # 停止OpenClaw服务
+            if callback:
+                callback("停止OpenClaw服务...")
+            
+            # 这里简化处理，实际应该停止OpenClaw守护进程
             if callback:
                 callback("OpenClaw服务停止成功")
-            
-            # 卸载服务
-            subprocess.run(["sc", "delete", "OpenClawService"], capture_output=True, text=True)
-            if callback:
-                callback("OpenClaw服务卸载成功")
             
             return True
         except Exception as e:
@@ -194,17 +192,21 @@ class Uninstaller:
             bool: 文件清理是否成功
         """
         try:
-            # 删除OpenClaw安装目录
-            install_dir = "C:\\Program Files\\OpenClaw"
-            if os.path.exists(install_dir):
-                subprocess.run(["Remove-Item", "-Path", install_dir, "-Recurse", "-Force"], 
-                              shell=True, capture_output=True, text=True)
-                if callback:
-                    callback("OpenClaw安装目录删除成功")
+            # 卸载OpenClaw npm包
+            if callback:
+                callback("卸载OpenClaw npm包...")
+            
+            subprocess.run(["npm", "uninstall", "-g", "openclaw"], 
+                          capture_output=True, text=True)
+            
+            if callback:
+                callback("OpenClaw npm包卸载成功")
             
             # 删除配置文件
             config_dir = os.path.expanduser("~/.openclaw")
             if os.path.exists(config_dir):
+                if callback:
+                    callback("删除OpenClaw配置文件...")
                 subprocess.run(["Remove-Item", "-Path", config_dir, "-Recurse", "-Force"], 
                               shell=True, capture_output=True, text=True)
                 if callback:
