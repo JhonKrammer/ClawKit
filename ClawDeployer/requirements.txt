@@ -1,0 +1,11 @@
+# ClawDeployer 依赖文件
+# 列出项目所需的Python依赖
+
+# 核心依赖
+# tkinter 是Python标准库，无需单独安装
+
+# 网络请求库（用于后续扩展，如与服务器验证Key）
+requests==2.32.3
+
+# 打包工具（用于生成可执行文件）
+pyinstaller==6.0.0
